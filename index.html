@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EGOIST TYPE DIAGNOSIS｜お前のエゴを暴け</title>
+  <meta name="description" content="5つの質問でお前の「エゴの種類」「天才の武器」「覚醒する瞬間」をAIが解析する。ブルーロック風Egoistタイプ診断。"/>
+  <meta property="og:title" content="EGOIST TYPE DIAGNOSIS｜お前のエゴを暴け"/>
+  <meta property="og:description" content="お前の中に眠るエゴを、AIが完全解析する。"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --black:  #000005;
+      --navy:   #000820;
+      --blue:   #0038ff;
+      --cyan:   #00cfff;
+      --neon:   #00f0ff;
+      --white:  #e8f4ff;
+      --muted:  rgba(0,207,255,0.4);
+      --border: rgba(0,207,255,0.18);
+      --glow:   0 0 20px rgba(0,240,255,0.5);
+      --glow2:  0 0 40px rgba(0,56,255,0.6);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Noto Sans JP', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── GRID BACKGROUND ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(0,56,255,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,56,255,0.06) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    /* ── SCAN LINE ── */
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.15) 2px,
+        rgba(0,0,0,0.15) 4px
+      );
+      pointer-events: none;
+    }
+
+    #app {
+      position: relative; z-index: 1;
+      max-width: 640px; margin: 0 auto;
+      padding: 0 16px 60px;
+      display: flex; flex-direction: column; align-items: center;
+    }
+
+    /* ── HEADER ── */
+    header {
+      width: 100%; text-align: center;
+      padding: 32px 0 24px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+    .header-sub {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px; color: var(--cyan);
+      letter-spacing: .3em; text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .header-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(38px, 10vw, 58px);
+      letter-spacing: .1em;
+      background: linear-gradient(180deg, #fff 0%, var(--cyan) 60%, var(--blue) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-shadow: none;
+      filter: drop-shadow(0 0 16px rgba(0,207,255,0.7));
+    }
+    .header-catch {
+      font-size: 13px; color: var(--muted);
+      margin-top: 8px; letter-spacing: .05em;
+    }
+
+    /* ── AD SLOT ── */
+    .ad-slot {
+      width: 100%; margin: 8px 0 20px;
+      border: 1px dashed rgba(0,207,255,0.15);
+      border-radius: 4px;
+      min-height: 60px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px; color: rgba(0,207,255,0.2);
+      letter-spacing: .15em;
+    }
+
+    /* ── CARD ── */
+    .card {
+      width: 100%;
+      background: rgba(0,8,32,0.85);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 36px 28px;
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp .5s cubic-bezier(.22,1,.36,1) both;
+    }
+    .card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--cyan), var(--blue), transparent);
+    }
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateY(24px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    /* ── INTRO ── */
+    .intro-number {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 120px; line-height: 1;
+      color: rgba(0,56,255,0.12);
+      position: absolute; right: -10px; top: -20px;
+      pointer-events: none; user-select: none;
+    }
+    .intro-tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px; color: var(--cyan);
+      letter-spacing: .2em; text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .intro-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(28px, 7vw, 42px);
+      letter-spacing: .05em; line-height: 1.2;
+      margin-bottom: 16px;
+      color: var(--white);
+    }
+    .intro-title span { color: var(--cyan); }
+    .intro-body {
+      font-size: 14px; line-height: 1.9;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 32px;
+    }
+    .intro-stats {
+      display: flex; gap: 24px; margin-bottom: 32px;
+      padding: 16px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+    .stat { text-align: center; flex: 1; }
+    .stat-n {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px; color: var(--cyan);
+      filter: drop-shadow(0 0 8px var(--cyan));
+    }
+    .stat-l { font-size: 10px; color: var(--muted); margin-top: 2px; letter-spacing: .1em; }
+
+    .btn-start {
+      display: block; width: 100%;
+      padding: 18px;
+      background: var(--blue);
+      color: #fff;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px; letter-spacing: .15em;
+      border: none; border-radius: 2px;
+      cursor: pointer;
+      position: relative; overflow: hidden;
+      transition: all .2s;
+      box-shadow: var(--glow2);
+    }
+    .btn-start::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(rgba(255,255,255,0.15), transparent);
+      opacity: 0; transition: opacity .2s;
+    }
+    .btn-start:hover { box-shadow: var(--glow), var(--glow2); transform: translateY(-2px); }
+    .btn-start:hover::after { opacity: 1; }
+
+    /* ── PROGRESS ── */
+    .progress-wrap { margin-bottom: 24px; }
+    .progress-meta {
+      display: flex; justify-content: space-between;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px; color: var(--cyan);
+      margin-bottom: 8px; letter-spacing: .1em;
+    }
+    .progress-track {
+      height: 2px; background: rgba(0,207,255,0.1);
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      box-shadow: 0 0 8px var(--cyan);
+      transition: width .45s cubic-bezier(.22,1,.36,1);
+    }
+
+    /* ── QUIZ ── */
+    .q-index {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 72px; color: rgba(0,207,255,0.08);
+      position: absolute; right: 20px; top: 16px;
+      line-height: 1; pointer-events: none;
+    }
+    .q-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px; color: var(--cyan);
+      letter-spacing: .2em; text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .q-text {
+      font-size: clamp(16px, 4vw, 20px);
+      font-weight: 700; line-height: 1.55;
+      margin-bottom: 28px;
+      color: var(--white);
+    }
+    .q-text span { color: var(--cyan); }
+    .options { display: flex; flex-direction: column; gap: 10px; }
+    .opt-btn {
+      padding: 16px 18px;
+      background: rgba(0,56,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--white);
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 14px; font-weight: 700;
+      cursor: pointer; text-align: left;
+      transition: all .18s;
+      position: relative; overflow: hidden;
+    }
+    .opt-btn::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: var(--cyan);
+      transform: scaleY(0); transition: transform .18s;
+    }
+    .opt-btn:hover { background: rgba(0,56,255,0.18); border-color: var(--cyan); }
+    .opt-btn:hover::before { transform: scaleY(1); }
+    .opt-btn.selected {
+      background: rgba(0,207,255,0.12); border-color: var(--cyan);
+      box-shadow: inset 0 0 20px rgba(0,207,255,0.08);
+    }
+    .opt-btn.selected::before { transform: scaleY(1); }
+
+    /* ── LOADING ── */
+    .loading-wrap { text-align: center; padding: 20px 0; }
+    .loading-hex {
+      width: 80px; height: 80px;
+      border: 2px solid var(--cyan);
+      margin: 0 auto 24px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px; color: var(--cyan);
+      position: relative;
+      animation: spin 4s linear infinite;
+      box-shadow: var(--glow);
+    }
+    .loading-hex::before {
+      content: '';
+      position: absolute; inset: -6px;
+      border: 1px solid rgba(0,207,255,0.2);
+      animation: spin 2s linear infinite reverse;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px; letter-spacing: .15em;
+      color: var(--cyan);
+      filter: drop-shadow(0 0 8px var(--cyan));
+      margin-bottom: 8px;
+    }
+    .loading-sub {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px; color: var(--muted);
+      letter-spacing: .1em;
+    }
+    .loading-bar-wrap { margin-top: 24px; }
+    .loading-bar {
+      height: 2px; background: rgba(0,207,255,0.1);
+      border-radius: 0; overflow: hidden;
+    }
+    .loading-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      box-shadow: 0 0 8px var(--cyan);
+      animation: loadBar 2.5s ease-in-out infinite;
+    }
+    @keyframes loadBar {
+      0%   { width:0%; margin-left:0; }
+      50%  { width:100%; margin-left:0; }
+      100% { width:0%; margin-left:100%; }
+    }
+
+    /* ── RESULT ── */
+    .result-header { text-align: center; margin-bottom: 32px; }
+    .result-rank {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px; color: var(--cyan);
+      letter-spacing: .3em; text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .result-type {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(36px, 10vw, 56px);
+      letter-spacing: .08em; line-height: 1;
+      background: linear-gradient(180deg, #fff 0%, var(--cyan) 60%, var(--blue) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 20px rgba(0,207,255,0.8));
+      margin-bottom: 10px;
+    }
+    .result-tagline {
+      font-size: 13px; color: var(--muted);
+      font-style: italic; letter-spacing: .05em;
+    }
+
+    .result-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      margin: 24px 0;
+    }
+
+    .result-section { margin-bottom: 24px; }
+    .rs-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px; color: var(--cyan);
+      letter-spacing: .25em; text-transform: uppercase;
+      margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .rs-label::after {
+      content: '';
+      flex: 1; height: 1px;
+      background: linear-gradient(90deg, var(--border), transparent);
+    }
+    .rs-text {
+      font-size: 15px; line-height: 1.9;
+      color: rgba(255,255,255,0.85);
+    }
+    .rs-text strong { color: var(--cyan); }
+
+    .weapon-box {
+      background: rgba(0,56,255,0.08);
+      border: 1px solid rgba(0,207,255,0.2);
+      border-radius: 2px; padding: 18px;
+      margin-top: 10px;
+    }
+    .weapon-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px; color: var(--cyan);
+      letter-spacing: .1em;
+      filter: drop-shadow(0 0 8px var(--cyan));
+      margin-bottom: 6px;
+    }
+    .weapon-desc { font-size: 13px; color: rgba(255,255,255,0.65); line-height: 1.8; }
+
+    .action-row { display: flex; gap: 10px; margin-top: 28px; }
+    .btn-x {
+      flex: 2; padding: 16px;
+      background: #000; border: 1px solid rgba(255,255,255,0.2);
+      color: #fff; font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px; letter-spacing: .1em;
+      cursor: pointer; border-radius: 2px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: all .2s;
+    }
+    .btn-x:hover { border-color: #fff; box-shadow: 0 0 16px rgba(255,255,255,0.2); }
+    .btn-retry {
+      flex: 1; padding: 16px;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px; letter-spacing: .1em;
+      cursor: pointer; border-radius: 2px;
+      transition: all .2s;
+    }
+    .btn-retry:hover { border-color: var(--cyan); color: var(--cyan); }
+    .x-logo { width: 15px; height: 15px; fill: #fff; }
+
+    /* ── CORNER DECORATIONS ── */
+    .corner {
+      position: absolute;
+      width: 12px; height: 12px;
+      border-color: var(--cyan);
+      border-style: solid;
+      opacity: 0.5;
+    }
+    .corner-tl { top: 0; left: 0; border-width: 1px 0 0 1px; }
+    .corner-tr { top: 0; right: 0; border-width: 1px 1px 0 0; }
+    .corner-bl { bottom: 0; left: 0; border-width: 0 0 1px 1px; }
+    .corner-br { bottom: 0; right: 0; border-width: 0 1px 1px 0; }
+
+    @media(max-width:400px) {
+      .card { padding: 28px 18px; }
+      .action-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <header>
+    <div class="header-sub">// BLUE LOCK SYSTEM //</div>
+    <div class="header-title">EGOIST TYPE<br>DIAGNOSIS</div>
+    <div class="header-catch">お前の中のエゴを、今ここで暴く。</div>
+  </header>
+
+  <!-- AD TOP -->
+  <div class="ad-slot">
+    <script src="https://adm.shinobi.jp/s/88f52a87985de7fcb2b4f158f8599c16"></script>
+  </div>
+
+  <!-- INTRO -->
+  <div id="screen-intro" class="card">
+    <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div><div class="corner corner-br"></div>
+    <div class="intro-number">E</div>
+    <div class="intro-tag">// SYSTEM BOOT //</div>
+    <div class="intro-title">お前の<span>エゴ</span>を<br>解析する</div>
+    <p class="intro-body">
+      5つの問いに答えろ。<br>
+      お前の「エゴの種類」「天才としての武器」「覚醒する瞬間」を<br>
+      AIが完全に暴き出す。<br><br>
+      <strong style="color:var(--cyan)">エゴイストだけが、世界の頂点に立てる。</strong>
+    </p>
+    <div class="intro-stats">
+      <div class="stat"><div class="stat-n">5</div><div class="stat-l">QUESTIONS</div></div>
+      <div class="stat"><div class="stat-n">AI</div><div class="stat-l">ANALYSIS</div></div>
+      <div class="stat"><div class="stat-n">∞</div><div class="stat-l">EGO TYPES</div></div>
+    </div>
+    <button class="btn-start" onclick="startQuiz()">▶ DIAGNOSIS START</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="screen-quiz" class="card" style="display:none">
+    <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div><div class="corner corner-br"></div>
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="q-count">QUESTION 01 / 05</span>
+        <span id="q-pct">20%</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:20%"></div></div>
+    </div>
+    <div class="q-index" id="q-index">01</div>
+    <div class="q-label">// EGO SCAN //</div>
+    <div class="q-text" id="q-text"></div>
+    <div class="options" id="options"></div>
+  </div>
+
+  <!-- LOADING -->
+  <div id="screen-loading" class="card" style="display:none">
+    <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div><div class="corner corner-br"></div>
+    <div class="loading-wrap">
+      <div class="loading-hex">EGO</div>
+      <div class="loading-label">ANALYZING<span id="dots"></span></div>
+      <div class="loading-sub">// お前のエゴを解析中 //</div>
+      <div class="loading-bar-wrap">
+        <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="screen-result" class="card" style="display:none"></div>
+
+  <!-- AD BOTTOM -->
+  <div class="ad-slot" id="ad-bottom" style="display:none;margin-top:20px">
+    <script src="https://adm.shinobi.jp/s/88f52a87985de7fcb2b4f158f8599c16"></script>
+  </div>
+
+</div><!-- /#app -->
+
+<script>
+const QUESTIONS = [
+  {
+    text: "試合中、<span>絶対に負けられない</span>場面。お前はどう動く？",
+    opts: [
+      { label: "自分のスタイルを貫いて、全力で仕掛ける", val: "instinct_attacker" },
+      { label: "データと状況を冷静に分析して最善手を選ぶ", val: "logic_strategist" },
+      { label: "チームの流れを読んで、決定的な一手を作る", val: "flow_creator" },
+      { label: "相手の弱点を見抜いて、心理的に追い詰める", val: "mind_hunter" },
+    ]
+  },
+  {
+    text: "お前が最も<span>「生きている」</span>と感じる瞬間は？",
+    opts: [
+      { label: "誰も見たことのないプレーが炸裂した瞬間", val: "flash_genius" },
+      { label: "緻密な計算が完璧にハマった瞬間", val: "perfect_calc" },
+      { label: "自分がいなければ生まれなかった結果を出した時", val: "indispensable" },
+      { label: "周囲の期待を完全に超えた瞬間", val: "beyond_expect" },
+    ]
+  },
+  {
+    text: "チームメイトが<span>お前に求めるもの</span>は何だ？",
+    opts: [
+      { label: "予測不能な突破力と爆発力", val: "explosion" },
+      { label: "状況を変える圧倒的な技術力", val: "technique" },
+      { label: "誰も気づかない視野とパスセンス", val: "vision" },
+      { label: "ここぞの場面での絶対的な決定力", val: "clutch" },
+    ]
+  },
+  {
+    text: "<span>ライバル</span>の存在は、お前にとって何だ？",
+    opts: [
+      { label: "燃料だ。奴らがいるから俺は強くなる", val: "fuel" },
+      { label: "倒すべき壁。存在すること自体が許せない", val: "wall" },
+      { label: "自分の限界を知るための鏡", val: "mirror" },
+      { label: "正直、今はどうでもいい。俺が俺を超えることが先だ", val: "self_first" },
+    ]
+  },
+  {
+    text: "お前の<span>究極のゴール</span>は？",
+    opts: [
+      { label: "世界最高のストライカーになる", val: "world_top" },
+      { label: "誰も真似できない自分だけのスタイルを確立する", val: "unique_style" },
+      { label: "自分の才能で、見ている全員を震わせる", val: "震わせる" },
+      { label: "信じた道を極限まで突き詰めた先を見る", val: "極限" },
+    ]
+  },
+];
+
+const VAL_MAP = {
+  instinct_attacker:"本能で仕掛ける攻撃型", logic_strategist:"論理で支配する戦略型",
+  flow_creator:"流れを創る司令塔型", mind_hunter:"心理を狩るハンター型",
+  flash_genius:"閃きで輝く天才型", perfect_calc:"完璧な計算で動く精密型",
+  indispensable:"唯一無二の存在を目指す型", beyond_expect:"期待を超え続ける覚醒型",
+  explosion:"爆発的な突破力タイプ", technique:"圧倒的技術力タイプ",
+  vision:"超視野・パスセンスタイプ", clutch:"勝負強さ・決定力タイプ",
+  fuel:"ライバルをエネルギーに変える", wall:"打ち倒すべき壁として見る",
+  mirror:"自分の限界を知る鏡として使う", self_first:"自分自身との戦いを優先する",
+  world_top:"世界最高を目指す", unique_style:"唯一のスタイルを確立する",
+  "震わせる":"圧倒的な才能で全員を震わせる", "極限":"道を極限まで突き詰める",
+};
+
+let currentQ = 0, answers = [], dotsTimer = null, resultData = null;
+
+function show(id) {
+  ['screen-intro','screen-quiz','screen-loading','screen-result'].forEach(s => {
+    document.getElementById(s).style.display = s===id ? 'block' : 'none';
+  });
+  document.getElementById('ad-bottom').style.display = id==='screen-result' ? 'flex' : 'none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startQuiz() {
+  currentQ=0; answers=[];
+  show('screen-quiz'); renderQ();
+}
+
+function renderQ() {
+  const q = QUESTIONS[currentQ];
+  const total = QUESTIONS.length;
+  const pct = Math.round(((currentQ+1)/total)*100);
+  const num = String(currentQ+1).padStart(2,'0');
+  document.getElementById('q-count').textContent = `QUESTION ${num} / 0${total}`;
+  document.getElementById('q-pct').textContent = `${pct}%`;
+  document.getElementById('progress-fill').style.width = pct+'%';
+  document.getElementById('q-index').textContent = num;
+  document.getElementById('q-text').innerHTML = q.text;
+  const wrap = document.getElementById('options');
+  wrap.innerHTML = '';
+  q.opts.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.textContent = opt.label;
+    btn.onclick = () => pick(opt.val, btn);
+    wrap.appendChild(btn);
+  });
+}
+
+function pick(val, btn) {
+  document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+  btn.classList.add('selected');
+  answers.push(val);
+  setTimeout(() => {
+    currentQ++;
+    if(currentQ < QUESTIONS.length) { renderQ(); }
+    else { show('screen-loading'); startDots(); callAPI(); }
+  }, 380);
+}
+
+function startDots() {
+  let n=0;
+  dotsTimer = setInterval(()=>{ n=(n+1)%4; document.getElementById('dots').textContent='.'.repeat(n); },500);
+}
+function stopDots() { clearInterval(dotsTimer); }
+
+async function callAPI() {
+  const profile = answers.map(a=>VAL_MAP[a]||a).join('、');
+  const prompt =
+`あなたはブルーロックの「絵心甚八」のように、天才の本質を見抜く分析者です。
+以下のプロフィールのユーザーの「エゴの種類」「天才の武器（技名）」「覚醒の瞬間」を、潔世一や糸師凛のような熱くドラマチックな語り口で分析してください。
+
+プロフィール：${profile}
+
+必ずJSON形式のみで返してください（コードブロック不要）：
+{
+  "egoType": "（例：「爆発的本能型エゴイスト」など、カッコいいエゴタイプ名）",
+  "tagline": "（15文字以内のキャッチコピー）",
+  "egoAnalysis": "（お前のエゴはこうだ！という熱い分析文、120文字前後。潔や凛の語り口で）",
+  "weapon": "（天才の武器の名称。例：「絶対的直感」「カオスの支配」など、格好いい技名）",
+  "weaponDesc": "（その武器の説明。60文字前後）",
+  "awakening": "（覚醒する瞬間の描写。80文字前後。映画のナレーションのように）",
+  "potential": "（将来の可能性。一言で。例：「世界を変えるストライカー」）"
+}`;
+
+  try {
+    const res = await fetch('/api/chat', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ prompt })
+    });
+    if(!res.ok) throw new Error();
+    const data = await res.json();
+    const text = (data.content||[]).map(c=>c.text||'').join('');
+    resultData = JSON.parse(text.replace(/```json|```/g,'').trim());
+  } catch(e) {
+    resultData = {
+      egoType:"爆発的本能型エゴイスト",
+      tagline:"お前の中の炎は本物だ",
+      egoAnalysis:"お前のエゴは——誰にも止められない本能の炎だ。計算じゃない。理屈でもない。「勝ちたい」という純粋な欲望が、お前を最強たらしめる。それがお前の武器だ。",
+      weapon:"絶対直感フラッシュ",
+      weaponDesc:"0.1秒の閃きで最適解を叩き出す、論理を超えた天才の本能。",
+      awakening:"誰もが諦めたその瞬間——お前だけが、まだ前を向いている。",
+      potential:"世界を震わせるストライカー"
+    };
+  }
+  stopDots(); renderResult(); show('screen-result');
+}
+
+function renderResult() {
+  const r = resultData;
+  document.getElementById('screen-result').innerHTML = `
+    <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div><div class="corner corner-br"></div>
+    <div class="result-header">
+      <div class="result-rank">// EGO ANALYSIS COMPLETE //</div>
+      <div class="result-type">${r.egoType}</div>
+      <div class="result-tagline">"${r.tagline}"</div>
+    </div>
+    <div class="result-divider"></div>
+    <div class="result-section">
+      <div class="rs-label">EGO ANALYSIS</div>
+      <div class="rs-text">${r.egoAnalysis}</div>
+    </div>
+    <div class="result-section">
+      <div class="rs-label">WEAPON</div>
+      <div class="weapon-box">
+        <div class="weapon-name">「${r.weapon}」</div>
+        <div class="weapon-desc">${r.weaponDesc}</div>
+      </div>
+    </div>
+    <div class="result-section">
+      <div class="rs-label">AWAKENING MOMENT</div>
+      <div class="rs-text">${r.awakening}</div>
+    </div>
+    <div class="result-section">
+      <div class="rs-label">POTENTIAL</div>
+      <div class="rs-text"><strong>${r.potential}</strong></div>
+    </div>
+    <div class="result-divider"></div>
+    <div class="action-row">
+      <button class="btn-x" onclick="shareX()">
+        <svg class="x-logo" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.26 5.638L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+        POST ON X
+      </button>
+      <button class="btn-retry" onclick="startQuiz()">RETRY</button>
+    </div>
+  `;
+}
+
+function shareX() {
+  if(!resultData) return;
+  const text =
+    `【Egoistタイプ診断】\n` +
+    `俺のエゴタイプは「${resultData.egoType}」\n` +
+    `"${resultData.tagline}"\n\n` +
+    `武器：「${resultData.weapon}」\n\n` +
+    `お前も診断してみろ👇\n${location.href}\n\n` +
+    `#Egoistタイプ診断 #ブルーロック #エゴイスト`;
+  window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text),'_blank','noopener');
+}
+</script>
+</body>
+</html>
