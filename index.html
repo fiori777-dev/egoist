@@ -66,7 +66,6 @@
       display: flex; flex-direction: column; align-items: center;
     }
 
-    /* ── HEADER ── */
     header {
       width: 100%; text-align: center;
       padding: 32px 0 24px;
@@ -85,7 +84,6 @@
       letter-spacing: .1em;
       background: linear-gradient(180deg, #fff 0%, var(--cyan) 60%, var(--blue) 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      text-shadow: none;
       filter: drop-shadow(0 0 16px rgba(0,207,255,0.7));
     }
     .header-catch {
@@ -93,7 +91,6 @@
       margin-top: 8px; letter-spacing: .05em;
     }
 
-    /* ── AD SLOT ── */
     .ad-slot {
       width: 100%; margin: 8px 0 20px;
       border: 1px dashed rgba(0,207,255,0.15);
@@ -103,9 +100,9 @@
       font-family: 'Share Tech Mono', monospace;
       font-size: 10px; color: rgba(0,207,255,0.2);
       letter-spacing: .15em;
+      overflow: hidden;
     }
 
-    /* ── CARD ── */
     .card {
       width: 100%;
       background: rgba(0,8,32,0.85);
@@ -127,7 +124,6 @@
       to   { opacity:1; transform: translateY(0); }
     }
 
-    /* ── INTRO ── */
     .intro-number {
       font-family: 'Bebas Neue', sans-serif;
       font-size: 120px; line-height: 1;
@@ -179,16 +175,8 @@
       transition: all .2s;
       box-shadow: var(--glow2);
     }
-    .btn-start::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(rgba(255,255,255,0.15), transparent);
-      opacity: 0; transition: opacity .2s;
-    }
     .btn-start:hover { box-shadow: var(--glow), var(--glow2); transform: translateY(-2px); }
-    .btn-start:hover::after { opacity: 1; }
 
-    /* ── PROGRESS ── */
     .progress-wrap { margin-bottom: 24px; }
     .progress-meta {
       display: flex; justify-content: space-between;
@@ -206,7 +194,6 @@
       transition: width .45s cubic-bezier(.22,1,.36,1);
     }
 
-    /* ── QUIZ ── */
     .q-index {
       font-family: 'Bebas Neue', sans-serif;
       font-size: 72px; color: rgba(0,207,255,0.08);
@@ -237,24 +224,13 @@
       font-size: 14px; font-weight: 700;
       cursor: pointer; text-align: left;
       transition: all .18s;
-      position: relative; overflow: hidden;
-    }
-    .opt-btn::before {
-      content: '';
-      position: absolute; left: 0; top: 0; bottom: 0;
-      width: 2px;
-      background: var(--cyan);
-      transform: scaleY(0); transition: transform .18s;
+      position: relative;
     }
     .opt-btn:hover { background: rgba(0,56,255,0.18); border-color: var(--cyan); }
-    .opt-btn:hover::before { transform: scaleY(1); }
     .opt-btn.selected {
       background: rgba(0,207,255,0.12); border-color: var(--cyan);
-      box-shadow: inset 0 0 20px rgba(0,207,255,0.08);
     }
-    .opt-btn.selected::before { transform: scaleY(1); }
 
-    /* ── LOADING ── */
     .loading-wrap { text-align: center; padding: 20px 0; }
     .loading-hex {
       width: 80px; height: 80px;
@@ -263,15 +239,8 @@
       display: flex; align-items: center; justify-content: center;
       font-family: 'Bebas Neue', sans-serif;
       font-size: 32px; color: var(--cyan);
-      position: relative;
       animation: spin 4s linear infinite;
       box-shadow: var(--glow);
-    }
-    .loading-hex::before {
-      content: '';
-      position: absolute; inset: -6px;
-      border: 1px solid rgba(0,207,255,0.2);
-      animation: spin 2s linear infinite reverse;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
     .loading-label {
@@ -286,24 +255,7 @@
       font-size: 11px; color: var(--muted);
       letter-spacing: .1em;
     }
-    .loading-bar-wrap { margin-top: 24px; }
-    .loading-bar {
-      height: 2px; background: rgba(0,207,255,0.1);
-      border-radius: 0; overflow: hidden;
-    }
-    .loading-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--blue), var(--cyan));
-      box-shadow: 0 0 8px var(--cyan);
-      animation: loadBar 2.5s ease-in-out infinite;
-    }
-    @keyframes loadBar {
-      0%   { width:0%; margin-left:0; }
-      50%  { width:100%; margin-left:0; }
-      100% { width:0%; margin-left:100%; }
-    }
 
-    /* ── RESULT ── */
     .result-header { text-align: center; margin-bottom: 32px; }
     .result-rank {
       font-family: 'Share Tech Mono', monospace;
@@ -348,7 +300,6 @@
       font-size: 15px; line-height: 1.9;
       color: rgba(255,255,255,0.85);
     }
-    .rs-text strong { color: var(--cyan); }
 
     .weapon-box {
       background: rgba(0,56,255,0.08);
@@ -363,7 +314,6 @@
       filter: drop-shadow(0 0 8px var(--cyan));
       margin-bottom: 6px;
     }
-    .weapon-desc { font-size: 13px; color: rgba(255,255,255,0.65); line-height: 1.8; }
 
     .action-row { display: flex; gap: 10px; margin-top: 28px; }
     .btn-x {
@@ -373,21 +323,15 @@
       font-size: 18px; letter-spacing: .1em;
       cursor: pointer; border-radius: 2px;
       display: flex; align-items: center; justify-content: center; gap: 8px;
-      transition: all .2s;
     }
-    .btn-x:hover { border-color: #fff; box-shadow: 0 0 16px rgba(255,255,255,0.2); }
     .btn-retry {
       flex: 1; padding: 16px;
       background: transparent; border: 1px solid var(--border);
       color: var(--muted); font-family: 'Bebas Neue', sans-serif;
       font-size: 18px; letter-spacing: .1em;
       cursor: pointer; border-radius: 2px;
-      transition: all .2s;
     }
-    .btn-retry:hover { border-color: var(--cyan); color: var(--cyan); }
-    .x-logo { width: 15px; height: 15px; fill: #fff; }
 
-    /* ── CORNER DECORATIONS ── */
     .corner {
       position: absolute;
       width: 12px; height: 12px;
@@ -415,9 +359,11 @@
     <div class="header-catch">お前の中のエゴを、今ここで暴く。</div>
   </header>
 
-  <!-- AD TOP -->
+  <!-- AD TOP (NEW) -->
   <div class="ad-slot">
-    <script src="https://adm.shinobi.jp/s/88f52a87985de7fcb2b4f158f8599c16"></script>
+    <!-- admax -->
+    <script src="https://adm.shinobi.jp/s/62743a01d0f2193ae92763f8c4004377"></script>
+    <!-- admax -->
   </div>
 
   <!-- INTRO -->
@@ -467,7 +413,7 @@
       <div class="loading-label">ANALYZING<span id="dots"></span></div>
       <div class="loading-sub">// お前のエゴを解析中 //</div>
       <div class="loading-bar-wrap">
-        <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+        <div style="height:2px; background:rgba(0,207,255,0.1);"><div style="height:100%; background:var(--cyan); width:50%; animation: loadBar 2s infinite;"></div></div>
       </div>
     </div>
   </div>
@@ -475,12 +421,14 @@
   <!-- RESULT -->
   <div id="screen-result" class="card" style="display:none"></div>
 
-  <!-- AD BOTTOM -->
+  <!-- AD BOTTOM (NEW) -->
   <div class="ad-slot" id="ad-bottom" style="display:none;margin-top:20px">
-    <script src="https://adm.shinobi.jp/s/88f52a87985de7fcb2b4f158f8599c16"></script>
+    <!-- admax -->
+    <script src="https://adm.shinobi.jp/s/62743a01d0f2193ae92763f8c4004377"></script>
+    <!-- admax -->
   </div>
 
-</div><!-- /#app -->
+</div>
 
 <script>
 const QUESTIONS = [
@@ -599,29 +547,13 @@ function stopDots() { clearInterval(dotsTimer); }
 
 async function callAPI() {
   const profile = answers.map(a=>VAL_MAP[a]||a).join('、');
-  const prompt =
-`あなたはブルーロックの「絵心甚八」のように、天才の本質を見抜く分析者です。
-以下のプロフィールのユーザーの「エゴの種類」「天才の武器（技名）」「覚醒の瞬間」を、潔世一や糸師凛のような熱くドラマチックな語り口で分析してください。
-
-プロフィール：${profile}
-
-必ずJSON形式のみで返してください（コードブロック不要）：
-{
-  "egoType": "（例：「爆発的本能型エゴイスト」など、カッコいいエゴタイプ名）",
-  "tagline": "（15文字以内のキャッチコピー）",
-  "egoAnalysis": "（お前のエゴはこうだ！という熱い分析文、120文字前後。潔や凛の語り口で）",
-  "weapon": "（天才の武器の名称。例：「絶対的直感」「カオスの支配」など、格好いい技名）",
-  "weaponDesc": "（その武器の説明。60文字前後）",
-  "awakening": "（覚醒する瞬間の描写。80文字前後。映画のナレーションのように）",
-  "potential": "（将来の可能性。一言で。例：「世界を変えるストライカー」）"
-}`;
+  const prompt = `あなたはブルーロックの「絵心甚八」のように、天才の本質を見抜く分析者です。以下のプロフィールのユーザーの「エゴの種類」「天才の武器（技名）」「覚醒の瞬間」を、潔世一や糸師凛のような熱くドラマチックな語り口で分析してください。プロフィール：${profile} 必ずJSON形式のみで返してください：{"egoType": "...", "tagline": "...", "egoAnalysis": "...", "weapon": "...", "weaponDesc": "...", "awakening": "...", "potential": "..."}`;
 
   try {
     const res = await fetch('/api/chat', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ prompt })
     });
-    if(!res.ok) throw new Error();
     const data = await res.json();
     const text = (data.content||[]).map(c=>c.text||'').join('');
     resultData = JSON.parse(text.replace(/```json|```/g,'').trim());
@@ -665,16 +597,9 @@ function renderResult() {
       <div class="rs-label">AWAKENING MOMENT</div>
       <div class="rs-text">${r.awakening}</div>
     </div>
-    <div class="result-section">
-      <div class="rs-label">POTENTIAL</div>
-      <div class="rs-text"><strong>${r.potential}</strong></div>
-    </div>
     <div class="result-divider"></div>
     <div class="action-row">
-      <button class="btn-x" onclick="shareX()">
-        <svg class="x-logo" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.26 5.638L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
-        POST ON X
-      </button>
+      <button class="btn-x" onclick="shareX()">POST ON X</button>
       <button class="btn-retry" onclick="startQuiz()">RETRY</button>
     </div>
   `;
@@ -682,14 +607,8 @@ function renderResult() {
 
 function shareX() {
   if(!resultData) return;
-  const text =
-    `【Egoistタイプ診断】\n` +
-    `俺のエゴタイプは「${resultData.egoType}」\n` +
-    `"${resultData.tagline}"\n\n` +
-    `武器：「${resultData.weapon}」\n\n` +
-    `お前も診断してみろ👇\n${location.href}\n\n` +
-    `#Egoistタイプ診断 #ブルーロック #エゴイスト`;
-  window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text),'_blank','noopener');
+  const text = `【Egoistタイプ診断】\n俺のエゴタイプは「${resultData.egoType}」\n"${resultData.tagline}"\n\nお前も診断してみろ👇\n${location.href}\n#Egoistタイプ診断 #ブルーロック`;
+  window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(text),'_blank');
 }
 </script>
 </body>
